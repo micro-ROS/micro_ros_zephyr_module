@@ -1,0 +1,68 @@
+menuconfig MICROROS
+    bool
+	default n
+    prompt "micro-ROS Support"
+    select APP_LINK_WITH_MICROROS
+    help
+        Enables a micro-ROS library
+
+if MICROROS
+    config APP_LINK_WITH_MICROROS
+        bool "Link 'app' with MICROROS"
+        default n
+        help
+            Add MICROROS header files to the 'app' include path. 
+   
+    choice
+        prompt "micro-ROS transport"
+        
+        config MICROROS_TRANSPORT_SERIAL
+            bool "micro-ROS serial transport"
+        
+        config MICROROS_TRANSPORT_SERIAL_USB
+            bool "micro-ROS USB serial transport"
+        
+        config MICROROS_TRANSPORT_UDP
+            bool "micro-ROS UDP network transport"
+        
+    endchoice
+
+    if MICROROS_TRANSPORT_UDP
+        config MICROROS_AGENT_IP
+            string "micro-ROS Agent IP"
+            default "192.168.1.100"
+            help
+                micro-ROS Agent IP.
+        
+        config MICROROS_AGENT_PORT
+            string "micro-ROS Agent Port"
+            default "8888"
+            help
+                micro-ROS Agent port.
+
+        menu "WiFi Configuration"
+
+            config MICROROS_WIFI_SSID
+                string "WiFi SSID"
+                default "myssid"
+                help
+                    SSID (network name) for the example to connect to.
+        
+            config MICROROS_WIFI_PASSWORD
+                string "WiFi Password"
+                default "mypassword"
+                help
+                    WiFi password (WPA or WPA2) for the example to use.
+        endmenu
+    endif
+
+    if MICROROS_TRANSPORT_SERIAL
+        config MICROROS_SERIAL_PORT
+            string "micro-ROS Agent serial port"
+            default "1"
+            help
+                micro-ROS Agent IP.
+    endif
+    
+endif
+    
