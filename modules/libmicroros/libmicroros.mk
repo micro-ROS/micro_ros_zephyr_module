@@ -13,7 +13,7 @@ CXXFLAGS_INTERNAL := $(CXXFLAGS)
 CFLAGS_INTERNAL := -c -I$(ZEPHYR_BASE)/include/posix -I$(PROJECT_BINARY_DIR)/include/generated $(CFLAGS_INTERNAL)
 CXXFLAGS_INTERNAL := -c -I$(ZEPHYR_BASE)/include/posix -I$(PROJECT_BINARY_DIR)/include/generated $(CXXFLAGS_INTERNAL)
 
-all: $(COMPONENT_PATH)/libmicroros.a configure_colcon_meta
+all: $(COMPONENT_PATH)/libmicroros.a
 
 clean:
 	rm -rf $(COMPONENT_PATH)/libmicroros.a; \
@@ -27,10 +27,17 @@ ZEPHYR_CONF_FILE := $(PROJECT_BINARY_DIR)/.config
 configure_colcon_meta: $(COMPONENT_PATH)/colcon.meta $(COMPONENT_PATH)/micro_ros_src/src
 	. $(COMPONENT_PATH)/utils.sh; \
 	cp $(COMPONENT_PATH)/colcon.meta $(COMPONENT_PATH)/configured_colcon.meta; \
+	ZEPHYR_CONF_FILE=$(ZEPHYR_CONF_FILE); \
+	update_meta_from_zephyr_config "CONFIG_MICROROS_NODES" "rmw_microxrcedds" "RMW_UXRCE_MAX_NODES"; \
+	update_meta_from_zephyr_config "CONFIG_MICROROS_PUBLISHERS" "rmw_microxrcedds" "RMW_UXRCE_MAX_PUBLISHERS"; \
+	update_meta_from_zephyr_config "CONFIG_MICROROS_SUBSCRIBERS" "rmw_microxrcedds" "RMW_UXRCE_MAX_SUBSCRIPTIONS"; \
+	update_meta_from_zephyr_config "CONFIG_MICROROS_CLIENTS" "rmw_microxrcedds" "RMW_UXRCE_MAX_CLIENTS"; \
+	update_meta_from_zephyr_config "CONFIG_MICROROS_SERVERS" "rmw_microxrcedds" "RMW_UXRCE_MAX_SERVICES"; \
+	update_meta_from_zephyr_config "CONFIG_MICROROS_RMW_HISTORIC" "rmw_microxrcedds" "RMW_UXRCE_MAX_HISTORY"; \
+	update_meta_from_zephyr_config "CONFIG_MICROROS_XRCE_DDS_HISTORIC" "rmw_microxrcedds" "RMW_UXRCE_STREAM_HISTORY"; \
 	if grep CONFIG_MICROROS_TRANSPORT_SERIAL=y $(ZEPHYR_CONF_FILE); then \
 		cp -f $(COMPONENT_PATH)/external_transports/zephyr_serial_transport.c $(COMPONENT_PATH)/micro_ros_src/src/Micro-XRCE-DDS-Client/src/c/profile/transport/serial/serial_transport_external.c; \
 		cp -f $(COMPONENT_PATH)/external_transports/zephyr_serial_transport.h $(COMPONENT_PATH)/micro_ros_src/src/Micro-XRCE-DDS-Client/include/uxr/client/profile/transport/serial/serial_transport_external.h; \
-		MICROROS_AGENT_SERIAL_PORT=$$(grep CONFIG_MICROROS_SERIAL_PORT $(ZEPHYR_CONF_FILE) | awk -F '=' '{gsub(/"/, "", $$2); print $$2}'); \
 		update_meta "microxrcedds_client" "UCLIENT_PROFILE_SERIAL=ON"; \
 		update_meta "microxrcedds_client" "UCLIENT_EXTERNAL_SERIAL=ON"; \
 		update_meta "microxrcedds_client" "UCLIENT_PROFILE_DISCOVERY=OFF"; \
@@ -39,7 +46,8 @@ configure_colcon_meta: $(COMPONENT_PATH)/colcon.meta $(COMPONENT_PATH)/micro_ros
 		update_meta "rmw_microxrcedds" "RMW_UXRCE_TRANSPORT=custom_serial"; \
 		remove_meta "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_UDP_IP"; \
       	remove_meta "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_UDP_PORT"; \
-		update_meta "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_SERIAL_DEVICE=$$MICROROS_AGENT_SERIAL_PORT"; \
+		update_meta_from_zephyr_config "CONFIG_MICROROS_SERIAL_PORT" "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_SERIAL_DEVICE"; \
+		update_meta_from_zephyr_config "CONFIG_MICROROS_XRCE_DDS_MTU" "microxrcedds_client" "UCLIENT_SERIAL_TRANSPORT_MTU"; \
 	elif grep CONFIG_MICROROS_TRANSPORT_SERIAL_USB=y $(ZEPHYR_CONF_FILE); then \
 		cp -f $(COMPONENT_PATH)/external_transports/zephyr_usb_serial_transport.c $(COMPONENT_PATH)/micro_ros_src/src/Micro-XRCE-DDS-Client/src/c/profile/transport/serial/serial_transport_external.c; \
 		cp -f $(COMPONENT_PATH)/external_transports/zephyr_usb_serial_transport.h $(COMPONENT_PATH)/micro_ros_src/src/Micro-XRCE-DDS-Client/include/uxr/client/profile/transport/serial/serial_transport_external.h; \
@@ -52,21 +60,21 @@ configure_colcon_meta: $(COMPONENT_PATH)/colcon.meta $(COMPONENT_PATH)/micro_ros
 		remove_meta "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_UDP_IP"; \
       	remove_meta "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_UDP_PORT"; \
       	remove_meta "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_SERIAL_DEVICE"; \
+		update_meta_from_zephyr_config "CONFIG_MICROROS_XRCE_DDS_MTU" "microxrcedds_client" "UCLIENT_SERIAL_TRANSPORT_MTU"; \
 	elif grep CONFIG_MICROROS_TRANSPORT_UDP=y $(ZEPHYR_CONF_FILE); then \
-		MICROROS_AGENT_IP=$$(grep CONFIG_MICROROS_AGENT_IP $(ZEPHYR_CONF_FILE) | awk -F '=' '{gsub(/"/, "", $$2); print $$2}'); \
-		MICROROS_AGENT_PORT=$$(grep CONFIG_MICROROS_AGENT_PORT $(ZEPHYR_CONF_FILE) | awk -F '=' '{gsub(/"/, "", $$2); print $$2}'); \
 		update_meta "rmw_microxrcedds" "RMW_UXRCE_TRANSPORT=udp"; \
-		update_meta "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_UDP_IP=$$MICROROS_AGENT_IP"; \
-		update_meta "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_UDP_PORT=$$MICROROS_AGENT_PORT"; \
 		update_meta "microxrcedds_client" "UCLIENT_PROFILE_UDP=ON"; \
 		update_meta "microxrcedds_client" "UCLIENT_PROFILE_DISCOVERY=OFF"; \
 		update_meta "microxrcedds_client" "UCLIENT_PROFILE_TCP=OFF"; \
 		update_meta "microxrcedds_client" "UCLIENT_EXTERNAL_SERIAL=OFF"; \
 		remove_meta "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_SERIAL_DEVICE"; \
+		update_meta_from_zephyr_config "CONFIG_MICROROS_AGENT_IP" "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_UDP_IP"; \
+		update_meta_from_zephyr_config "CONFIG_MICROROS_AGENT_PORT" "rmw_microxrcedds" "RMW_UXRCE_DEFAULT_UDP_PORT"; \
+		update_meta_from_zephyr_config "CONFIG_MICROROS_XRCE_DDS_MTU" "microxrcedds_client" "UCLIENT_UDP_TRANSPORT_MTU"; \
 	fi;
 
 
-$(COMPONENT_PATH)/zephyr_toolchain.cmake: $(COMPONENT_PATH)/zephyr_toolchain.cmake.in
+configure_toolchain: $(COMPONENT_PATH)/zephyr_toolchain.cmake.in
 	rm -f $(COMPONENT_PATH)/zephyr_toolchain.cmake; \
 	cat $(COMPONENT_PATH)/zephyr_toolchain.cmake.in | \
 		sed "s/@CMAKE_C_COMPILER@/$(subst /,\/,$(CC))/g" | \
@@ -113,7 +121,7 @@ $(COMPONENT_PATH)/micro_ros_src/src:
 	touch src/rcl/rcl_yaml_param_parser/COLCON_IGNORE;
 	
 
-$(COMPONENT_PATH)/micro_ros_src/install: configure_colcon_meta $(COMPONENT_PATH)/zephyr_toolchain.cmake $(COMPONENT_PATH)/micro_ros_dev/install $(COMPONENT_PATH)/micro_ros_src/src
+$(COMPONENT_PATH)/micro_ros_src/install: configure_colcon_meta configure_toolchain $(COMPONENT_PATH)/micro_ros_dev/install $(COMPONENT_PATH)/micro_ros_src/src
 	cd $(UROS_DIR); \
 	. ../micro_ros_dev/install/local_setup.sh; \
 	colcon build \

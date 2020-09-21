@@ -63,6 +63,39 @@ if MICROROS
             help
                 micro-ROS Agent IP.
     endif
+
     
+    config MICROROS_NODES
+        string "available micro-ROS nodes"
+        default "1"
+
+    config MICROROS_PUBLISHERS
+        string "available micro-ROS publishers"
+        default "1"
+    
+    config MICROROS_SUBSCRIBERS
+        string "available micro-ROS subscribers"
+        default "1"
+
+    config MICROROS_CLIENTS
+        string "available micro-ROS service clients"
+        default "1"
+
+    config MICROROS_SERVERS
+        string "available micro-ROS service servers"
+        default "1"
+        
+    config MICROROS_RMW_HISTORIC
+        string "available micro-ROS RMW historic memory"
+        default "4"
+    
+    config MICROROS_XRCE_DDS_MTU
+        string "micro-ROS transport MTU"
+        default "512"
+        
+    config MICROROS_XRCE_DDS_HISTORIC
+        string "micro-ROS middleware memory slots"
+        default "4"  
+
 endif
     
