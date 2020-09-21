@@ -1,6 +1,6 @@
 # micro-ROS module for Zephyr
 
-This component has been tested in Zephyr RTOS v2.4.0
+This module has been tested in Zephyr RTOS v2.4.0
 
 ## Dependencies
 
@@ -14,7 +14,7 @@ sudo apt update
 sudo apt install python3-colcon-common-extensions
 ```
 
-Some python3 packages are also required inside the IDF virtual environment:
+Some python3 packages are also required:
 
 ```bash
 pip3 install catkin_pkg lark-parser empy
