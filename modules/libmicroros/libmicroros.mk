@@ -148,6 +148,6 @@ $(COMPONENT_PATH)/libmicroros.a: $(COMPONENT_PATH)/micro_ros_src/install
 		done; \
 		cd ..; rm -rf $$folder; \
 	done ; \
-	$(AR) rc libmicroros.a *.obj; cp libmicroros.a $(COMPONENT_PATH); ranlib $(COMPONENT_PATH)/libmicroros.a; \
+	$(AR) rc libmicroros.a *.obj; cp libmicroros.a $(COMPONENT_PATH); ${RANLIB} $(COMPONENT_PATH)/libmicroros.a; \
 	cd ..; rm -rf libmicroros; \
 	cp -R $(UROS_DIR)/install/include $(COMPONENT_PATH)/include;
