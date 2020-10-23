@@ -17,6 +17,7 @@ jobs:
           path: micro_ros_zephyr_module
 
       - name: Dependencies
+        shell: bash
         run: |
           apt update
           export DEBIAN_FRONTEND=noninteractive
@@ -40,7 +41,7 @@ jobs:
           rm -rf $TOOLCHAIN_FILE_NAME
           export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
           export ZEPHYR_SDK_INSTALL_DIR=$(pwd)/zephyr-sdk
-          . zephyrproject/zephyr/zephyr-env.sh
+          source zephyrproject/zephyr/zephyr-env.sh
           # Installing micro-ROS prerequisites
           sh -c 'echo "deb [arch=amd64,arm64] http://repo.ros2.org/ubuntu/main `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list'
           curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
