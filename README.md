@@ -1,6 +1,6 @@
 # micro-ROS module for Zephyr
 
-This module has been tested in Zephyr RTOS v2.4.0
+This module has been tested in Zephyr RTOS v2.4.0 and SKD 0.11.4
 
 ## Dependencies
 
