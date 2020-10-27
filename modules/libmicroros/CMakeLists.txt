@@ -30,10 +30,6 @@ set(external_project_cxxflags
 
 include(ExternalProject)
 
-# micro-ros has nano already defined, so remove to avoid errors in building with none zephyr-sdk toolchain
-string(REPLACE "-specs=nano.specs" ""  external_project_cxxflags ${external_project_cxxflags})
-string(REPLACE "-specs=nano.specs" ""  external_project_cflags ${external_project_cflags})
-
 externalproject_add(libmicroros_project
     PREFIX     ${CMAKE_BINARY_DIR}/libmicroros-prefix
     SOURCE_DIR ${MICROROS_DIR}
