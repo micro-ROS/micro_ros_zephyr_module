@@ -1,4 +1,4 @@
-name: CI micro-ROS Zephyr module
+name: CI
 
 on:
   pull_request:
