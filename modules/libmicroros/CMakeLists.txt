@@ -10,6 +10,8 @@ else()
 set(submake "make")
 endif()
 
+# micro-ROS library
+
 zephyr_get_include_directories_for_lang_as_string(       C includes)
 zephyr_get_system_include_directories_for_lang_as_string(C system_includes)
 zephyr_get_compile_definitions_for_lang_as_string(       C definitions)
@@ -50,7 +52,6 @@ externalproject_add(libmicroros_project
     BUILD_BYPRODUCTS ${MICROROS_DIR}/libmicroros.a
     )
 
-# zephyr_include_directories(${MICROROS_DIR}/include)
 zephyr_library_import(libmicroros ${MICROROS_DIR}/libmicroros.a)
 
 zephyr_interface_library_named(microros)
@@ -58,6 +59,31 @@ add_dependencies(microros libmicroros)
 add_dependencies(microros libmicroros_project)
 target_include_directories(microros INTERFACE ${MICROROS_DIR}/include)
 
+# micro-ROS transport library
+
+if(CONFIG_MICROROS_TRANSPORT_SERIAL)
+    set(MICROROS_TRANSPORT_DIR ${MICROROS_DIR}/microros_transports/serial)
+elseif(CONFIG_MICROROS_TRANSPORT_SERIAL_USB)
+    set(MICROROS_TRANSPORT_DIR ${MICROROS_DIR}/microros_transports/serial-usb)
+elseif(CONFIG_MICROROS_TRANSPORT_UDP)
+    set(MICROROS_TRANSPORT_DIR ${MICROROS_DIR}/microros_transports/udp)
+else()
+    message(FATAL_ERROR Please set a micro-ROS transport)
+endif()
+
+zephyr_library_named(microros_transports)
+zephyr_include_directories(${MICROROS_DIR}/include)
+zephyr_include_directories(${MICROROS_TRANSPORT_DIR})
+
+zephyr_library_sources(
+   ${MICROROS_TRANSPORT_DIR}/microros_transports.c
+)
+
+add_dependencies(microros microros_transports)
+add_dependencies(microros_transports libmicroros_project)
+add_dependencies(microros_transports libmicroros)
+
+# Cleaning
 
 set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES 
     ${MICROROS_DIR}/include 
