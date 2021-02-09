@@ -1,11 +1,14 @@
-#include <uxr/client/profile/transport/serial/serial_transport_external.h>
+#include <uxr/client/transport.h>
+
+#include <zephyr.h>
 
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 
-#include <zephyr.h>
+#include <microros_transports.h>
+
 #include <device.h>
 #include <sys/printk.h>
 #include <drivers/uart.h>
@@ -49,13 +52,14 @@ static void uart_fifo_callback(struct device *dev){
     }
 }
 
+bool zephyr_transport_open(struct uxrCustomTransport * transport){
+    zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
 
-bool uxr_init_serial_platform(struct uxrSerialPlatform* platform, int fd, uint8_t remote_addr, uint8_t local_addr){  
     int ret;
     uint32_t baudrate, dtr = 0U;
 
-    platform->uart_dev = device_get_binding("CDC_ACM_0");
-    if (!platform->uart_dev) {
+    params->uart_dev = device_get_binding("CDC_ACM_0");
+    if (!params->uart_dev) {
         printk("CDC ACM device not found\n");
         return false;
     }
@@ -72,7 +76,7 @@ bool uxr_init_serial_platform(struct uxrSerialPlatform* platform, int fd, uint8_
     printk("Waiting for agent connection\n");
 
     while (true) {
-        uart_line_ctrl_get(platform->uart_dev, UART_LINE_CTRL_DTR, &dtr);
+        uart_line_ctrl_get(params->uart_dev, UART_LINE_CTRL_DTR, &dtr);
         if (dtr) {
             break;
         } else {
@@ -84,12 +88,12 @@ bool uxr_init_serial_platform(struct uxrSerialPlatform* platform, int fd, uint8_
     printk("Serial port connected!\n");
 
     /* They are optional, we use them to test the interrupt endpoint */
-    ret = uart_line_ctrl_set(platform->uart_dev, UART_LINE_CTRL_DCD, 1);
+    ret = uart_line_ctrl_set(params->uart_dev, UART_LINE_CTRL_DCD, 1);
     if (ret) {
         printk("Failed to set DCD, ret code %d\n", ret);
     }
 
-    ret = uart_line_ctrl_set(platform->uart_dev, UART_LINE_CTRL_DSR, 1);
+    ret = uart_line_ctrl_set(params->uart_dev, UART_LINE_CTRL_DSR, 1);
     if (ret) {
         printk("Failed to set DSR, ret code %d\n", ret);
     }
@@ -97,29 +101,33 @@ bool uxr_init_serial_platform(struct uxrSerialPlatform* platform, int fd, uint8_
     /* Wait 1 sec for the host to do all settings */
     k_busy_wait(1000*1000);
 
-    ret = uart_line_ctrl_get(platform->uart_dev, UART_LINE_CTRL_BAUD_RATE, &baudrate);
+    ret = uart_line_ctrl_get(params->uart_dev, UART_LINE_CTRL_BAUD_RATE, &baudrate);
     if (ret) {
         printk("Failed to get baudrate, ret code %d\n", ret);
     }
 
-    uart_irq_callback_set(platform->uart_dev, uart_fifo_callback);
+    uart_irq_callback_set(params->uart_dev, uart_fifo_callback);
 
     /* Enable rx interrupts */
-    uart_irq_rx_enable(platform->uart_dev);
+    uart_irq_rx_enable(params->uart_dev);
 
     return true;
 }
 
-bool uxr_close_serial_platform(struct uxrSerialPlatform* platform){   
-      return true;
+bool zephyr_transport_close(struct uxrCustomTransport * transport){
+    zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
+
+    return true;
 }
 
-size_t uxr_write_serial_data_platform(uxrSerialPlatform* platform, uint8_t* buf, size_t len, uint8_t* errcode){ 
+size_t zephyr_transport_write(struct uxrCustomTransport* transport, const uint8_t * buf, size_t len, uint8_t * err){
+    zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
+
     size_t wrote;
     
     wrote = ring_buf_put(&out_ringbuf, buf, len);
     
-    uart_irq_tx_enable(platform->uart_dev);
+    uart_irq_tx_enable(params->uart_dev);
 
     while (!ring_buf_is_empty(&out_ringbuf)){
         k_sleep(K_MSEC(5));
@@ -128,7 +136,9 @@ size_t uxr_write_serial_data_platform(uxrSerialPlatform* platform, uint8_t* buf,
     return wrote;
 }
 
-size_t uxr_read_serial_data_platform(uxrSerialPlatform* platform, uint8_t* buf, size_t len, int timeout, uint8_t* errcode){ 
+size_t zephyr_transport_read(struct uxrCustomTransport* transport, uint8_t* buf, size_t len, int timeout, uint8_t* err){
+    zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
+
     size_t read = 0;
     int spent_time = 0;
 
@@ -137,9 +147,9 @@ size_t uxr_read_serial_data_platform(uxrSerialPlatform* platform, uint8_t* buf, 
         spent_time++;
     }
 
-    uart_irq_rx_disable(platform->uart_dev);
+    uart_irq_rx_disable(params->uart_dev);
     read = ring_buf_get(&in_ringbuf, buf, len);
-    uart_irq_rx_enable(platform->uart_dev);
+    uart_irq_rx_enable(params->uart_dev);
 
-      return read;
- }
+    return read;
+}
