@@ -11,7 +11,7 @@
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
 
-#include <rmw_microros/api.h>
+#include <rmw_microros/rmw_microros.h>
 #include <microros_transports.h>
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc);for(;;){};}}
