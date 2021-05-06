@@ -7,8 +7,8 @@ else
 	BUILD_TYPE = Release
 endif
 
-CFLAGS_INTERNAL := $(CFLAGS)
-CXXFLAGS_INTERNAL := $(CXXFLAGS)
+CFLAGS_INTERNAL := $(X_CFLAGS)
+CXXFLAGS_INTERNAL := $(X_CXXFLAGS)
 
 CFLAGS_INTERNAL := -c -I$(ZEPHYR_BASE)/include/posix -I$(PROJECT_BINARY_DIR)/include/generated $(CFLAGS_INTERNAL)
 CXXFLAGS_INTERNAL := -c -I$(ZEPHYR_BASE)/include/posix -I$(PROJECT_BINARY_DIR)/include/generated $(CXXFLAGS_INTERNAL)
@@ -46,8 +46,8 @@ configure_colcon_meta: $(COMPONENT_PATH)/colcon.meta $(COMPONENT_PATH)/micro_ros
 configure_toolchain: $(COMPONENT_PATH)/zephyr_toolchain.cmake.in
 	rm -f $(COMPONENT_PATH)/zephyr_toolchain.cmake; \
 	cat $(COMPONENT_PATH)/zephyr_toolchain.cmake.in | \
-		sed "s/@CMAKE_C_COMPILER@/$(subst /,\/,$(CC))/g" | \
-		sed "s/@CMAKE_CXX_COMPILER@/$(subst /,\/,$(CXX))/g" | \
+		sed "s/@CMAKE_C_COMPILER@/$(subst /,\/,$(X_CC))/g" | \
+		sed "s/@CMAKE_CXX_COMPILER@/$(subst /,\/,$(X_CXX))/g" | \
 		sed "s/@CMAKE_SYSROOT@/$(subst /,\/,$(COMPONENT_PATH))/g" | \
 		sed "s/@CFLAGS@/$(subst /,\/,$(CFLAGS_INTERNAL))/g" | \
 		sed "s/@CXXFLAGS@/$(subst /,\/,$(CXXFLAGS_INTERNAL))/g" \
@@ -56,40 +56,42 @@ configure_toolchain: $(COMPONENT_PATH)/zephyr_toolchain.cmake.in
 $(COMPONENT_PATH)/micro_ros_dev/install:
 	rm -rf micro_ros_dev; \
 	mkdir micro_ros_dev; cd micro_ros_dev; \
-	git clone -b foxy https://github.com/ament/ament_cmake src/ament_cmake; \
-	git clone -b foxy https://github.com/ament/ament_lint src/ament_lint; \
-	git clone -b foxy https://github.com/ament/ament_package src/ament_package; \
-	git clone -b foxy https://github.com/ament/googletest src/googletest; \
-	git clone -b foxy https://github.com/ros2/ament_cmake_ros src/ament_cmake_ros; \
-	colcon build; 
+	git clone -b master https://github.com/ament/ament_cmake src/ament_cmake; \
+	git clone -b master https://github.com/ament/ament_lint src/ament_lint; \
+	git clone -b master https://github.com/ament/ament_package src/ament_package; \
+	git clone -b ros2 https://github.com/ament/googletest src/googletest; \
+	git clone -b master https://github.com/ros2/ament_cmake_ros src/ament_cmake_ros; \
+	git clone -b master https://github.com/ament/ament_index src/ament_index; \
+	colcon build --cmake-args -DBUILD_TESTING=OFF; 
 
 $(COMPONENT_PATH)/micro_ros_src/src:
 	rm -rf micro_ros_src; \
 	mkdir micro_ros_src; cd micro_ros_src; \
 	git clone -b foxy https://github.com/eProsima/micro-CDR src/micro-CDR; \
 	git clone -b foxy https://github.com/eProsima/Micro-XRCE-DDS-Client src/Micro-XRCE-DDS-Client; \
-	git clone -b foxy https://github.com/micro-ROS/rcl src/rcl; \
-	git clone -b foxy https://github.com/ros2/rclc src/rclc; \
-	git clone -b foxy https://github.com/micro-ROS/rcutils src/rcutils; \
-	git clone -b foxy https://github.com/micro-ROS/micro_ros_msgs src/micro_ros_msgs; \
-	git clone -b foxy https://github.com/micro-ROS/rmw-microxrcedds src/rmw-microxrcedds; \
-	git clone -b foxy https://github.com/micro-ROS/rosidl_typesupport src/rosidl_typesupport; \
-	git clone -b foxy https://github.com/micro-ROS/rosidl_typesupport_microxrcedds src/rosidl_typesupport_microxrcedds; \
-	git clone -b master https://github.com/ros2/tinydir_vendor src/tinydir_vendor; \
-	git clone -b foxy https://github.com/ros2/rosidl src/rosidl; \
-	git clone -b foxy https://github.com/ros2/rmw src/rmw; \
-	git clone -b foxy https://github.com/ros2/rcl_interfaces src/rcl_interfaces; \
-	git clone -b foxy https://github.com/ros2/rosidl_defaults src/rosidl_defaults; \
-	git clone -b foxy https://github.com/ros2/unique_identifier_msgs src/unique_identifier_msgs; \
-	git clone -b foxy https://github.com/ros2/common_interfaces src/common_interfaces; \
-	git clone -b foxy https://github.com/ros2/test_interface_files src/test_interface_files; \
-	git clone -b foxy https://github.com/ros2/rmw_implementation src/rmw_implementation; \
-	git clone -b foxy_microros https://gitlab.com/micro-ROS/ros_tracing/ros2_tracing src/ros2_tracing; \
+	git clone -b master https://github.com/micro-ROS/rcl src/rcl; \
+	git clone -b master https://github.com/ros2/rclc src/rclc; \
+	git clone -b master https://github.com/micro-ROS/rcutils src/rcutils; \
+	git clone -b main https://github.com/micro-ROS/micro_ros_msgs src/micro_ros_msgs; \
+	git clone -b main https://github.com/micro-ROS/rmw-microxrcedds src/rmw-microxrcedds; \
+	git clone -b master https://github.com/micro-ROS/rosidl_typesupport src/rosidl_typesupport; \
+	git clone -b main https://github.com/micro-ROS/rosidl_typesupport_microxrcedds src/rosidl_typesupport_microxrcedds; \
+	git clone -b master https://github.com/ros2/rosidl src/rosidl; \
+	git clone -b master https://github.com/ros2/rmw src/rmw; \
+	git clone -b master https://github.com/ros2/rcl_interfaces src/rcl_interfaces; \
+	git clone -b master https://github.com/ros2/rosidl_defaults src/rosidl_defaults; \
+	git clone -b master https://github.com/ros2/unique_identifier_msgs src/unique_identifier_msgs; \
+	git clone -b master https://github.com/ros2/common_interfaces src/common_interfaces; \
+	git clone -b master https://github.com/ros2/test_interface_files src/test_interface_files; \
+	git clone -b master https://github.com/ros2/rmw_implementation src/rmw_implementation; \
+	git clone -b master https://github.com/ros2/rcl_logging src/rcl_logging; \
+	git clone -b master https://gitlab.com/micro-ROS/ros_tracing/ros2_tracing src/ros2_tracing; \
 	touch src/rosidl/rosidl_typesupport_introspection_c/COLCON_IGNORE; \
     touch src/rosidl/rosidl_typesupport_introspection_cpp/COLCON_IGNORE; \
     touch src/rclc/rclc_examples/COLCON_IGNORE; \
-	touch src/rcl/rcl_yaml_param_parser/COLCON_IGNORE;
-	
+	touch src/rcl/rcl_yaml_param_parser/COLCON_IGNORE; \
+	touch src/rcl_logging/rcl_logging_log4cxx/COLCON_IGNORE; \
+    touch src/rcl_logging/rcl_logging_spdlog/COLCON_IGNORE;
 
 $(COMPONENT_PATH)/micro_ros_src/install: configure_colcon_meta configure_toolchain $(COMPONENT_PATH)/micro_ros_dev/install $(COMPONENT_PATH)/micro_ros_src/src
 	cd $(UROS_DIR); \
@@ -112,12 +114,12 @@ $(COMPONENT_PATH)/libmicroros.a: $(COMPONENT_PATH)/micro_ros_src/install
 	mkdir -p $(UROS_DIR)/libmicroros; cd $(UROS_DIR)/libmicroros; \
 	for file in $$(find $(UROS_DIR)/install/lib/ -name '*.a'); do \
 		folder=$$(echo $$file | sed -E "s/(.+)\/(.+).a/\2/"); \
-		mkdir -p $$folder; cd $$folder; $(AR) x $$file; \
+		mkdir -p $$folder; cd $$folder; $(X_AR) x $$file; \
 		for f in *; do \
 			mv $$f ../$$folder-$$f; \
 		done; \
 		cd ..; rm -rf $$folder; \
 	done ; \
-	$(AR) rc libmicroros.a *.obj; cp libmicroros.a $(COMPONENT_PATH); ${RANLIB} $(COMPONENT_PATH)/libmicroros.a; \
+	$(X_AR) rc libmicroros.a *.obj; cp libmicroros.a $(COMPONENT_PATH); ${X_RANLIB} $(COMPONENT_PATH)/libmicroros.a; \
 	cd ..; rm -rf libmicroros; \
 	cp -R $(UROS_DIR)/install/include $(COMPONENT_PATH)/include;
