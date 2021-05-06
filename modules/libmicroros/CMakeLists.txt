@@ -39,12 +39,12 @@ externalproject_add(libmicroros_project
     CONFIGURE_COMMAND ""
     BUILD_COMMAND
         ${submake} -f libmicroros.mk
-            CFLAGS=${external_project_cflags}
-            CXXFLAGS=${external_project_cxxflags}
-            CC=${CMAKE_C_COMPILER}
-            AR=${CMAKE_AR}
-            RANLIB=${CMAKE_RANLIB}
-            CXX=${CMAKE_CXX_COMPILER}
+            X_CFLAGS=${external_project_cflags}
+            X_CXXFLAGS=${external_project_cxxflags}
+            X_CC=${CMAKE_C_COMPILER}
+            X_AR=${CMAKE_AR}
+            X_RANLIB=${CMAKE_RANLIB}
+            X_CXX=${CMAKE_CXX_COMPILER}
             COMPONENT_PATH=${MICROROS_DIR}
             ZEPHYR_BASE=${ZEPHYR_BASE}
             PROJECT_BINARY_DIR=${PROJECT_BINARY_DIR}
