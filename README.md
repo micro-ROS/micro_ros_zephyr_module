@@ -4,20 +4,10 @@ This module has been tested in Zephyr RTOS v2.4.0 and SKD 0.11.4
 
 ## Dependencies
 
-This module needs `colcon` in order to build micro-ROS packages:
-
-<!-- apt install lsb-release git -->
-```bash
-sudo sh -c 'echo "deb [arch=amd64,arm64] http://repo.ros2.org/ubuntu/main `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list'
-sudo curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
-sudo apt update
-sudo apt install python3-colcon-common-extensions
-```
-
-Some python3 packages are also required:
+This component needs `colcon` and other Python 3 packages in order to build micro-ROS packages:
 
 ```bash
-pip3 install catkin_pkg lark-parser empy
+pip3 install catkin_pkg lark-parser empy colcon-common-extensions
 ```
 
 ## Usage
