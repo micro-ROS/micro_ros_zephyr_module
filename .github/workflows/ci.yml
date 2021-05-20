@@ -2,14 +2,18 @@ name: CI
 
 on:
   pull_request:
-    branches: 
+    branches:
       - '**'
 
 jobs:
 
   micro_ros_zephyr_module:
     runs-on: ubuntu-latest
-    container: ubuntu:20.04    
+    container: ubuntu:20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        zephyr_version: ["zephyr-v2.4.0", "zephyr-v2.5.0"]
 
     steps:
       - uses: actions/checkout@v2
@@ -29,6 +33,9 @@ jobs:
           export PATH=~/.local/bin:/github/home/.local/bin:"$PATH"
           west init zephyrproject
           cd zephyrproject
+          cd zephyr
+          git checkout ${{ matrix.zephyr_version }}
+          cd ..
           west update
           west zephyr-export
           pip3 install --user -r zephyr/scripts/requirements.txt
