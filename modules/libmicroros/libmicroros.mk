@@ -89,6 +89,7 @@ $(COMPONENT_PATH)/micro_ros_src/src:
     touch src/rosidl/rosidl_typesupport_introspection_cpp/COLCON_IGNORE; \
     touch src/rclc/rclc_examples/COLCON_IGNORE; \
     touch src/common_interfaces/actionlib_msgs/COLCON_IGNORE; \
+	touch src/common_interfaces/std_srvs/COLCON_IGNORE; \
 	touch src/rcl/rcl_yaml_param_parser/COLCON_IGNORE; \
 	touch src/rcl_logging/rcl_logging_log4cxx/COLCON_IGNORE; \
     touch src/rcl_logging/rcl_logging_spdlog/COLCON_IGNORE;
