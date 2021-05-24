@@ -17,12 +17,14 @@ jobs:
       fail-fast: false
       matrix:
         zephyr_version: ["zephyr-v2.4.0", "zephyr-v2.5.0"]
-        distro: ["foxy", "rolling"]
+        distro: ["foxy", "rolling", "galactic"]
         include:
           - distro: foxy
             branch: foxy
           - distro: rolling
             branch: main
+          - distro: galactic
+            branch: galactic
     steps:
       - uses: actions/checkout@v2
         with:
