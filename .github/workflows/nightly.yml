@@ -25,10 +25,13 @@ jobs:
             branch: main
           - zephyr_version: zephyr-v2.4.0
             zephyr_sdk: 0.11.4
+            sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
           - zephyr_version: zephyr-v2.5.0
             zephyr_sdk: 0.11.4
+            sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
           - zephyr_version: zephyr-v2.6.0
             zephyr_sdk: 0.12.4
+            sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-x86_64-linux-setup.run
     steps:
       - uses: actions/checkout@v2
         with:
@@ -55,7 +58,7 @@ jobs:
           pip3 install --user -r zephyr/scripts/requirements.txt
           cd ..
           export TOOLCHAIN_VERSION=${{ matrix.zephyr_sdk }}
-          export TOOLCHAIN_FILE_NAME=zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
+          export TOOLCHAIN_FILE_NAME=${{ matrix.sdk_filename }}
           wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v$TOOLCHAIN_VERSION/$TOOLCHAIN_FILE_NAME
           chmod +x $TOOLCHAIN_FILE_NAME
           yes | ./$TOOLCHAIN_FILE_NAME -- -rc -y -d $(pwd)/zephyr-sdk || :
