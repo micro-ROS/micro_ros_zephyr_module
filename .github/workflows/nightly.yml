@@ -1,6 +1,6 @@
 name: Nightly
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       name:
@@ -12,15 +12,23 @@ jobs:
 
   micro_ros_zephyr_module:
     runs-on: ubuntu-latest
-    container: ubuntu:20.04    
+    container: ubuntu:20.04
     strategy:
       fail-fast: false
       matrix:
+        zephyr_version: ["zephyr-v2.4.0", "zephyr-v2.5.0", "zephyr-v2.6.0"]
+        distro: ["foxy", "rolling"]
         include:
           - distro: foxy
             branch: foxy
           - distro: rolling
             branch: main
+          - zephyr_version: zephyr-v2.4.0
+            zephyr_sdk: 0.11.4
+          - zephyr_version: zephyr-v2.5.0
+            zephyr_sdk: 0.11.4
+          - zephyr_version: zephyr-v2.6.0
+            zephyr_sdk: 0.12.4
     steps:
       - uses: actions/checkout@v2
         with:
@@ -39,11 +47,14 @@ jobs:
           export PATH=~/.local/bin:/github/home/.local/bin:"$PATH"
           west init zephyrproject
           cd zephyrproject
+          cd zephyr
+          git checkout ${{ matrix.zephyr_version }}
+          cd ..
           west update
           west zephyr-export
           pip3 install --user -r zephyr/scripts/requirements.txt
           cd ..
-          export TOOLCHAIN_VERSION=0.11.4
+          export TOOLCHAIN_VERSION=${{ matrix.zephyr_sdk }}
           export TOOLCHAIN_FILE_NAME=zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
           wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v$TOOLCHAIN_VERSION/$TOOLCHAIN_FILE_NAME
           chmod +x $TOOLCHAIN_FILE_NAME
