@@ -29,10 +29,10 @@ Is possible to use a micro-ROS Agent just with this docker command:
 
 ```bash
 # Serial micro-ROS Agent
-docker run -it --rm -v /dev:/dev --privileged --net=host microros/micro-ros-agent:foxy serial --dev [YOUR BOARD PORT] -v6
+docker run -it --rm -v /dev:/dev --privileged --net=host microros/micro-ros-agent:galactic serial --dev [YOUR BOARD PORT] -v6
 
 # UDPv4 micro-ROS Agent
-docker run -it --rm --net=host microros/micro-ros-agent:foxy udp4 --port 8888 -v6
+docker run -it --rm --net=host microros/micro-ros-agent:galactic udp4 --port 8888 -v6
 
 ```
 
