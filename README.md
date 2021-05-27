@@ -1,6 +1,6 @@
 # micro-ROS module for Zephyr
 
-This module has been tested in Zephyr RTOS v2.4.0 and SKD 0.11.4
+This module has been tested in Zephyr RTOS v2.4.0 (SDK 0.11.4), v2.5.0 (SDK 0.11.4) and (v2.6.0 SDK 0.12.4).
 
 ## Dependencies
 
@@ -22,7 +22,7 @@ Some configuration parameters can be found using:
 
 ```bash
 west build -t menuconfig
-# Modules -> micro-ROS support 
+# Modules -> micro-ROS support
 ```
 
 Is possible to use a micro-ROS Agent just with this docker command:
