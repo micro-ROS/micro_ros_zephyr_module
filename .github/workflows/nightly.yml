@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        zephyr_version: ["zephyr-v2.4.0", "zephyr-v2.5.0", "v2.6.0-rc1"]
+        zephyr_version: ["zephyr-v2.4.0", "zephyr-v2.5.0", "zephyr-v2.6.0"]
         distro: ["foxy", "rolling"]
         include:
           - distro: foxy
@@ -29,7 +29,7 @@ jobs:
           - zephyr_version: zephyr-v2.5.0
             zephyr_sdk: 0.11.4
             sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
-          - zephyr_version: v2.6.0-rc1
+          - zephyr_version: zephyr-v2.6.0
             zephyr_sdk: 0.12.4
             sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-x86_64-linux-setup.run
     steps:
