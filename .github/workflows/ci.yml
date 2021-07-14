@@ -61,4 +61,4 @@ jobs:
           # Installing micro-ROS prerequisites
           pip3 install catkin_pkg lark-parser empy colcon-common-extensions
           # Building the app
-          west build -b disco_l475_iot1 micro_ros_zephyr_module
+          west build -b adafruit_feather_stm32f405 micro_ros_zephyr_module
