@@ -52,14 +52,14 @@ void main(void)
 
 	// create node
 	rcl_node_t node;
-	RCCHECK(rclc_node_init_default(&node, "esp32_int32_publisher", "", &support));
+	RCCHECK(rclc_node_init_default(&node, "zephyr_int32_publisher", "", &support));
 
 	// create publisher
 	RCCHECK(rclc_publisher_init_default(
 		&publisher,
 		&node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
-		"freertos_int32_publisher"));
+		"zephyr_int32_publisher"));
 
 	// create timer,
 	rcl_timer_t timer;
