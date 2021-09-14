@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #include <microros_transports.h>
 
@@ -23,7 +24,7 @@ struct ring_buf out_ringbuf, in_ringbuf;
 
 // --- micro-ROS Serial Transport for Zephyr ---
 
-static void uart_fifo_callback(struct device *dev){ 
+static void uart_fifo_callback(const struct device * dev, void * args){
     while (uart_irq_update(dev) && uart_irq_is_pending(dev)) {
         if (uart_irq_rx_ready(dev)) {
             int recv_len;
@@ -39,10 +40,11 @@ static void uart_fifo_callback(struct device *dev){
     }
 }
 
+
 bool zephyr_transport_open(struct uxrCustomTransport * transport){
     zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
-    
-    char uart_descriptor[8]; 
+
+    char uart_descriptor[8];
     sprintf(uart_descriptor,"UART_%d", params->fd);
     params->uart_dev = device_get_binding(uart_descriptor);
     if (!params->uart_dev) {
@@ -61,7 +63,7 @@ bool zephyr_transport_open(struct uxrCustomTransport * transport){
 }
 
 bool zephyr_transport_close(struct uxrCustomTransport * transport){
-    zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
+    (void) transport;
     // TODO: close serial transport here
     return true;
 }
@@ -73,7 +75,7 @@ size_t zephyr_transport_write(struct uxrCustomTransport* transport, const uint8_
     {
         uart_poll_out(params->uart_dev, buf[i]);
     }
-    
+
     return len;
 }
 
