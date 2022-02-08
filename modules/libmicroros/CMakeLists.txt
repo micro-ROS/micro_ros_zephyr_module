@@ -27,7 +27,7 @@ set(external_project_cflags
     )
 
 set(external_project_cxxflags
-    "${includes_cxx} ${definitions_cxx} ${options_cxx} ${system_includes_cxx}" 
+    "${includes_cxx} ${definitions_cxx} ${options_cxx} ${system_includes_cxx}"
     )
 
 include(ExternalProject)
@@ -59,6 +59,11 @@ add_dependencies(microros libmicroros)
 add_dependencies(microros libmicroros_project)
 target_include_directories(microros INTERFACE ${MICROROS_DIR}/include)
 
+set(INCLUDE_ROS2_PACKAGES rmw;rcl;rcl_action;rcl_lifecycle;rcl_logging_interface)
+foreach(pkg ${INCLUDE_ROS2_PACKAGES})
+    target_include_directories(microros INTERFACE ${MICROROS_DIR}/include/${pkg})
+endforeach()
+
 # micro-ROS transport library
 
 if(CONFIG_MICROROS_TRANSPORT_SERIAL)
@@ -85,8 +90,8 @@ add_dependencies(microros_transports libmicroros)
 
 # Cleaning
 
-set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES 
-    ${MICROROS_DIR}/include 
+set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
+    ${MICROROS_DIR}/include
     ${MICROROS_DIR}/configured_colcon.meta
     ${MICROROS_DIR}/zephyr_toolchain.cmake
     )
