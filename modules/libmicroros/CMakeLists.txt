@@ -59,7 +59,7 @@ add_dependencies(microros libmicroros)
 add_dependencies(microros libmicroros_project)
 target_include_directories(microros INTERFACE ${MICROROS_DIR}/include)
 
-set(INCLUDE_ROS2_PACKAGES rmw;rcl;rcl_action;rcl_lifecycle;rcl_logging_interface)
+set(INCLUDE_ROS2_PACKAGES rmw;rcl;rcl_action;rcl_lifecycle;rcl_logging_interface;rosidl_runtime_c;rosidl_typesupport_interface)
 foreach(pkg ${INCLUDE_ROS2_PACKAGES})
     target_include_directories(microros INTERFACE ${MICROROS_DIR}/include/${pkg})
 endforeach()
