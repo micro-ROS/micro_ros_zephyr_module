@@ -68,5 +68,7 @@ jobs:
           source zephyrproject/zephyr/zephyr-env.sh
           # Installing micro-ROS prerequisites
           pip3 install catkin_pkg lark-parser empy colcon-common-extensions
+          # Workaround. Remove when https://github.com/sphinx-doc/sphinx/issues/10291 and https://github.com/micro-ROS/micro_ros_zephyr_module/runs/5714546662?check_suite_focus=true
+          pip3 install --upgrade Sphinx
           # Building the app
           west build -b disco_l475_iot1 micro_ros_zephyr_module
