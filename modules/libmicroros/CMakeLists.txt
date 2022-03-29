@@ -63,7 +63,7 @@ execute_process(
     COMMAND
         make get_package_names
     WORKING_DIRECTORY
-        ${microros_src_dir}
+        ${MICROROS_DIR}
     OUTPUT_VARIABLE
         INCLUDE_ROS2_PACKAGES
     )
