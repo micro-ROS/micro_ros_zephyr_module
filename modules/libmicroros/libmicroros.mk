@@ -24,6 +24,10 @@ clean:
 
 ZEPHYR_CONF_FILE := $(PROJECT_BINARY_DIR)/.config
 
+get_package_names: $(COMPONENT_PATH)/micro_ros_src/src
+	@cd $(COMPONENT_PATH)/micro_ros_src/src; \
+	colcon list | awk '{print $$1}' | awk -v d=";" '{s=(NR==1?s:s d)$$0}END{print s}'
+
 configure_colcon_meta: $(COMPONENT_PATH)/colcon.meta $(COMPONENT_PATH)/micro_ros_src/src
 	. $(COMPONENT_PATH)/utils.sh; \
 	cp $(COMPONENT_PATH)/colcon.meta $(COMPONENT_PATH)/configured_colcon.meta; \
