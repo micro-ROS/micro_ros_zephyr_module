@@ -69,7 +69,7 @@ $(COMPONENT_PATH)/micro_ros_dev/install:
 	colcon build --cmake-args -DBUILD_TESTING=OFF;
 
 $(COMPONENT_PATH)/micro_ros_src/src:
-	rm -rf micro_ros_src; \
+	@rm -rf micro_ros_src; \
 	mkdir micro_ros_src; cd micro_ros_src; \
 	git clone -b foxy https://github.com/eProsima/micro-CDR src/micro-CDR; \
 	git clone -b foxy https://github.com/eProsima/Micro-XRCE-DDS-Client src/Micro-XRCE-DDS-Client; \
