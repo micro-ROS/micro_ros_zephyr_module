@@ -67,6 +67,7 @@ execute_process(
         ${MICROROS_DIR}
     OUTPUT_VARIABLE
         INCLUDE_ROS2_PACKAGES
+    OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 
 foreach(pkg ${INCLUDE_ROS2_PACKAGES})
