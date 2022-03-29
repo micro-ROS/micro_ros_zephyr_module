@@ -24,6 +24,10 @@ clean:
 
 ZEPHYR_CONF_FILE := $(PROJECT_BINARY_DIR)/.config
 
+get_package_names: $(COMPONENT_PATH)/micro_ros_src/src
+	@cd $(COMPONENT_PATH)/micro_ros_src/src; \
+	colcon list | awk '{print $$1}' | awk -v d=";" '{s=(NR==1?s:s d)$$0}END{print s}'
+
 configure_colcon_meta: $(COMPONENT_PATH)/colcon.meta $(COMPONENT_PATH)/micro_ros_src/src
 	. $(COMPONENT_PATH)/utils.sh; \
 	cp $(COMPONENT_PATH)/colcon.meta $(COMPONENT_PATH)/configured_colcon.meta; \
@@ -65,7 +69,7 @@ $(COMPONENT_PATH)/micro_ros_dev/install:
 	colcon build --cmake-args -DBUILD_TESTING=OFF;
 
 $(COMPONENT_PATH)/micro_ros_src/src:
-	rm -rf micro_ros_src; \
+	@rm -rf micro_ros_src; \
 	mkdir micro_ros_src; cd micro_ros_src; \
 	git clone -b foxy https://github.com/eProsima/micro-CDR src/micro-CDR; \
 	git clone -b foxy https://github.com/eProsima/Micro-XRCE-DDS-Client src/Micro-XRCE-DDS-Client; \
@@ -92,7 +96,6 @@ $(COMPONENT_PATH)/micro_ros_src/src:
     touch src/common_interfaces/actionlib_msgs/COLCON_IGNORE; \
 	touch src/common_interfaces/std_srvs/COLCON_IGNORE; \
 	touch src/rcl/rcl_yaml_param_parser/COLCON_IGNORE; \
-	touch src/rcl_logging/rcl_logging_log4cxx/COLCON_IGNORE; \
     touch src/rcl_logging/rcl_logging_spdlog/COLCON_IGNORE;
 
 $(COMPONENT_PATH)/micro_ros_src/install: configure_colcon_meta configure_toolchain $(COMPONENT_PATH)/micro_ros_dev/install $(COMPONENT_PATH)/micro_ros_src/src
