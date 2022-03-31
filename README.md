@@ -1,3 +1,13 @@
+<br/>
+
+<a>
+   <p align="center">
+      <img width="40%" src=".images/zephyr_logo.png">
+      <img width="40%" src=".images/microros_logo.png">
+   </p>
+</a>
+<br/>
+
 # micro-ROS module for Zephyr
 
 This module has been tested in Zephyr RTOS v2.4.0 (SDK 0.11.4), v2.5.0 (SDK 0.11.4) and (v2.6.0 SDK 0.12.4).
