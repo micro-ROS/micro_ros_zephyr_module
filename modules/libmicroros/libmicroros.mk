@@ -64,7 +64,7 @@ $(COMPONENT_PATH)/micro_ros_dev/install:
 	git clone -b humble https://github.com/ament/ament_cmake src/ament_cmake; \
 	git clone -b humble https://github.com/ament/ament_lint src/ament_lint; \
 	git clone -b humble https://github.com/ament/ament_package src/ament_package; \
-	git clone -b ros2 https://github.com/ament/googletest src/googletest; \
+	git clone -b humble https://github.com/ament/googletest src/googletest; \
 	git clone -b humble https://github.com/ros2/ament_cmake_ros src/ament_cmake_ros; \
 	git clone -b humble https://github.com/ament/ament_index src/ament_index; \
 	colcon build --cmake-args -DBUILD_TESTING=OFF;
