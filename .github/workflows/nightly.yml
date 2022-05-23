@@ -17,12 +17,16 @@ jobs:
       fail-fast: false
       matrix:
         zephyr_version: ["zephyr-v2.4.0", "zephyr-v2.5.0", "zephyr-v2.6.0"]
-        distro: ["foxy", "rolling"]
+        distro: ["foxy", "rolling", "galactic", "humble"]
         include:
           - distro: foxy
             branch: foxy
           - distro: rolling
             branch: main
+          - distro: galactic
+            branch: galactic
+          - distro: humble
+            branch: humble
           - zephyr_version: zephyr-v2.4.0
             zephyr_sdk: 0.11.4
             sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
