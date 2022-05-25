@@ -2,7 +2,7 @@
 Changelog for package micro_ros_zephyr
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-3.0.0 (2022-05-25)
+4.0.0 (2022-05-25)
 ------------------
 * Initial humble release (`#59 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/59>`_)
 * Update banner (`#56 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/56>`_)
