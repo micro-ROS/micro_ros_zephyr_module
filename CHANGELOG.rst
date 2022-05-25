@@ -2,8 +2,8 @@
 Changelog for package micro_ros_zephyr
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+4.0.0 (2022-05-25)
+------------------
 * Update banner (`#56 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/56>`_)
 * Merge pull request `#54 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/54>`_ from micro-ROS/mergify/bp/main/pr-53
 * [FIX] pass zephyr MTU config to UClient
