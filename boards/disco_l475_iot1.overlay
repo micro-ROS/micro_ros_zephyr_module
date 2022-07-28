@@ -1,0 +1,9 @@
+/ {
+    aliases {
+        uros-serial-port = &usart1;
+    };
+};
+
+&usart1 {
+    status = "okay";
+};
