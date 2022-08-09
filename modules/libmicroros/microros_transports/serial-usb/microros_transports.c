@@ -22,7 +22,7 @@ char uart_out_buffer[RING_BUF_SIZE];
 
 struct ring_buf out_ringbuf, in_ringbuf;
 
-static void uart_fifo_callback(struct device *dev){ 
+static void uart_fifo_callback(const struct device *dev, void * user_data){
     while (uart_irq_update(dev) && uart_irq_is_pending(dev)) {
         if (uart_irq_rx_ready(dev)) {
             int recv_len;
@@ -36,7 +36,7 @@ static void uart_fifo_callback(struct device *dev){
 
         }
 
-        if (uart_irq_tx_ready(dev)) {			
+        if (uart_irq_tx_ready(dev)) {
             char buffer[64];
             int rb_len;
 
@@ -58,12 +58,15 @@ bool zephyr_transport_open(struct uxrCustomTransport * transport){
     int ret;
     uint32_t baudrate, dtr = 0U;
 
-    params->uart_dev = device_get_binding("CDC_ACM_0");
+
+    // params->uart_dev = device_get_binding("CDC_ACM_0");
+    params->uart_dev = DEVICE_DT_GET_ONE(zephyr_cdc_acm_uart);
+    printk("uart_dev: %p\n", params->uart_dev);
     if (!params->uart_dev) {
         printk("CDC ACM device not found\n");
         return false;
     }
-
+    printk("CDC ACM device found: ready: %d\n", device_is_ready(params->uart_dev));
     ret = usb_enable(NULL);
     if (ret != 0) {
         printk("Failed to enable USB\n");
@@ -116,6 +119,7 @@ bool zephyr_transport_open(struct uxrCustomTransport * transport){
 
 bool zephyr_transport_close(struct uxrCustomTransport * transport){
     zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
+    (void) params;
 
     return true;
 }
@@ -124,15 +128,15 @@ size_t zephyr_transport_write(struct uxrCustomTransport* transport, const uint8_
     zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
 
     size_t wrote;
-    
+
     wrote = ring_buf_put(&out_ringbuf, buf, len);
-    
+
     uart_irq_tx_enable(params->uart_dev);
 
     while (!ring_buf_is_empty(&out_ringbuf)){
         k_sleep(K_MSEC(5));
     }
-    
+
     return wrote;
 }
 
