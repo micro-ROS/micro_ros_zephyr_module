@@ -16,31 +16,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-<<<<<<< HEAD
-        zephyr_version: ["zephyr-v2.4.0", "zephyr-v2.5.0", "zephyr-v2.6.0"]
-        distro: ["foxy", "rolling", "galactic"]
-=======
         zephyr_version: ["zephyr-v3.1.0", "zephyr-v2.7.2"]
         distro: ["foxy", "humble", "rolling"]
->>>>>>> 07797df (Move support to v2.7.x and v3.1.0 (#64))
         include:
           - distro: foxy
             branch: foxy
           - distro: rolling
             branch: main
-<<<<<<< HEAD
-          - distro: galactic
-            branch: galactic
-          - zephyr_version: zephyr-v2.4.0
-            zephyr_sdk: 0.11.4
-            sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
-          - zephyr_version: zephyr-v2.5.0
-            zephyr_sdk: 0.11.4
-            sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
-          - zephyr_version: zephyr-v2.6.0
-            zephyr_sdk: 0.12.4
-            sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-x86_64-linux-setup.run
-=======
           - distro: humble
             branch: humble
           - zephyr_version: zephyr-v2.7.2
@@ -49,7 +31,6 @@ jobs:
           - zephyr_version: zephyr-v3.1.0
             zephyr_sdk: 0.14.2
             sdk_filename: zephyr-sdk-$TOOLCHAIN_VERSION_linux-x86_64_minimal.tar.gz
->>>>>>> 07797df (Move support to v2.7.x and v3.1.0 (#64))
     steps:
       - uses: actions/checkout@v2
         with:
