@@ -30,7 +30,7 @@ jobs:
             sdk_filename: zephyr-sdk-$TOOLCHAIN_VERSION\_linux-x86_64_minimal.tar.gz
           - zephyr_version: zephyr-v3.1.0
             zephyr_sdk: 0.14.2
-            sdk_filename: zephyr-sdk-$TOOLCHAIN_VERSION_linux-x86_64_minimal.tar.gz
+            sdk_filename: zephyr-sdk-$TOOLCHAIN_VERSION\_linux-x86_64_minimal.tar.gz
     steps:
       - uses: actions/checkout@v2
         with:
