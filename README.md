@@ -3,7 +3,7 @@
 
 # micro-ROS module for Zephyr
 
-This module has been tested in Zephyr RTOS v2.4.0 (SDK 0.11.4), v2.5.0 (SDK 0.11.4) and v2.6.0 (SDK 0.12.4).
+This module has been tested in Zephyr RTOS v2.5.0 (SDK 0.11.4), v2.6.0 (SDK 0.12.4), v2.7.0 (SDK 0.13.1) and v3.1.0 (SDK 0.14.2).
 
 ## Dependencies
 
