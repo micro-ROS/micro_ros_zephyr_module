@@ -9,7 +9,7 @@ jobs:
 
   micro_ros_zephyr_module:
     runs-on: ubuntu-latest
-    container: ubuntu:22.04
+    container: ubuntu:20.04
     strategy:
       fail-fast: false
       matrix:
