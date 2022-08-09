@@ -59,14 +59,12 @@ bool zephyr_transport_open(struct uxrCustomTransport * transport){
     uint32_t baudrate, dtr = 0U;
 
 
-    // params->uart_dev = device_get_binding("CDC_ACM_0");
-    params->uart_dev = DEVICE_DT_GET_ONE(zephyr_cdc_acm_uart);
-    printk("uart_dev: %p\n", params->uart_dev);
+    params->uart_dev = device_get_binding("CDC_ACM_0");
     if (!params->uart_dev) {
         printk("CDC ACM device not found\n");
         return false;
     }
-    printk("CDC ACM device found: ready: %d\n", device_is_ready(params->uart_dev));
+
     ret = usb_enable(NULL);
     if (ret != 0) {
         printk("Failed to enable USB\n");
