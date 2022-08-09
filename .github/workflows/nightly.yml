@@ -12,38 +12,37 @@ jobs:
 
   micro_ros_zephyr_module:
     runs-on: ubuntu-latest
-    container: ubuntu:20.04
+    container: ubuntu:22.04
     strategy:
       fail-fast: false
       matrix:
-        zephyr_version: ["zephyr-v2.4.0", "zephyr-v2.5.0", "zephyr-v2.6.0"]
-        distro: ["foxy", "rolling"]
+        zephyr_version: ["zephyr-v3.1.0", "zephyr-v2.7.2"]
+        distro: ["foxy", "humble", "rolling"]
         include:
           - distro: foxy
             branch: foxy
           - distro: rolling
             branch: main
-          - zephyr_version: zephyr-v2.4.0
-            zephyr_sdk: 0.11.4
-            sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
-          - zephyr_version: zephyr-v2.5.0
-            zephyr_sdk: 0.11.4
-            sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-setup.run
-          - zephyr_version: zephyr-v2.6.0
-            zephyr_sdk: 0.12.4
-            sdk_filename: zephyr-toolchain-arm-$TOOLCHAIN_VERSION-x86_64-linux-setup.run
+          - distro: humble
+            branch: humble
+          - zephyr_version: zephyr-v2.7.2
+            zephyr_sdk: 0.14.2
+            sdk_filename: zephyr-sdk-$TOOLCHAIN_VERSION\_linux-x86_64_minimal.tar.gz
+          - zephyr_version: zephyr-v3.1.0
+            zephyr_sdk: 0.14.2
+            sdk_filename: zephyr-sdk-$TOOLCHAIN_VERSION_linux-x86_64_minimal.tar.gz
     steps:
       - uses: actions/checkout@v2
         with:
           path: micro_ros_zephyr_module
-          ref: ${{ matrix.branch }}
+
       - name: Dependencies
         shell: bash
         run: |
           apt update
           export DEBIAN_FRONTEND=noninteractive
-          apt install -y --no-install-recommends git cmake ninja-build gperf \
-            ccache dfu-util device-tree-compiler wget curl gnupg2 \
+          apt install -y --no-install-recommends wget git cmake ninja-build gperf \
+            ccache dfu-util device-tree-compiler wget \
             python3-dev python3-pip python3-setuptools python3-tk python3-wheel xz-utils file \
             make gcc gcc-multilib g++-multilib libsdl2-dev
           pip3 install --user -U west
@@ -60,15 +59,15 @@ jobs:
           export TOOLCHAIN_VERSION=${{ matrix.zephyr_sdk }}
           export TOOLCHAIN_FILE_NAME=${{ matrix.sdk_filename }}
           wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v$TOOLCHAIN_VERSION/$TOOLCHAIN_FILE_NAME
-          chmod +x $TOOLCHAIN_FILE_NAME
-          yes | ./$TOOLCHAIN_FILE_NAME -- -rc -y -d $(pwd)/zephyr-sdk || :
-          rm -rf $TOOLCHAIN_FILE_NAME
+          tar xvf $TOOLCHAIN_FILE_NAME
+          cd zephyr-sdk-$TOOLCHAIN_VERSION
+          ./setup.sh -h -t arm-zephyr-eabi -c
+          cd ..
+          source zephyr-sdk-$TOOLCHAIN_VERSION/environment-setup-x86_64-pokysdk-linux
           export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
-          export ZEPHYR_SDK_INSTALL_DIR=$(pwd)/zephyr-sdk
+          export ZEPHYR_SDK_INSTALL_DIR=$(pwd)/zephyr-sdk-$TOOLCHAIN_VERSION
           source zephyrproject/zephyr/zephyr-env.sh
           # Installing micro-ROS prerequisites
           pip3 install catkin_pkg lark-parser empy colcon-common-extensions
-          # Workaround. Remove when https://github.com/sphinx-doc/sphinx/issues/10291 and https://github.com/micro-ROS/micro_ros_zephyr_module/runs/5714546662?check_suite_focus=true
-          pip3 install --upgrade Sphinx
           # Building the app
           west build -b disco_l475_iot1 micro_ros_zephyr_module
