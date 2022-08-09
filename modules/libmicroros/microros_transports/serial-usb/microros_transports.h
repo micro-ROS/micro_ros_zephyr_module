@@ -26,7 +26,7 @@ extern "C"
 
 typedef struct {
     size_t fd;
-    const struct device *uart_dev;
+    struct device *uart_dev;
 } zephyr_transport_params_t;
 
 #define MICRO_ROS_FRAMING_REQUIRED true
