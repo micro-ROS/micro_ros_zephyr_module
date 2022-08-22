@@ -48,6 +48,7 @@ externalproject_add(libmicroros_project
             COMPONENT_PATH=${MICROROS_DIR}
             ZEPHYR_BASE=${ZEPHYR_BASE}
             PROJECT_BINARY_DIR=${PROJECT_BINARY_DIR}
+            KERNEL_VERSION_MAJOR=${KERNEL_VERSION_MAJOR}
     INSTALL_COMMAND ""
     BUILD_BYPRODUCTS ${MICROROS_DIR}/libmicroros.a
     )
@@ -93,6 +94,8 @@ zephyr_include_directories(${MICROROS_TRANSPORT_DIR})
 zephyr_library_sources(
    ${MICROROS_TRANSPORT_DIR}/microros_transports.c
 )
+
+zephyr_compile_definitions(KERNEL_VERSION_MAJOR=${KERNEL_VERSION_MAJOR})
 
 add_dependencies(microros microros_transports)
 add_dependencies(microros_transports libmicroros_project)

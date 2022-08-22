@@ -55,7 +55,8 @@ configure_toolchain: $(COMPONENT_PATH)/zephyr_toolchain.cmake.in
 		sed "s/@CMAKE_CXX_COMPILER@/$(subst /,\/,$(X_CXX))/g" | \
 		sed "s/@CMAKE_SYSROOT@/$(subst /,\/,$(COMPONENT_PATH))/g" | \
 		sed "s/@CFLAGS@/$(subst /,\/,$(CFLAGS_INTERNAL))/g" | \
-		sed "s/@CXXFLAGS@/$(subst /,\/,$(CXXFLAGS_INTERNAL))/g" \
+		sed "s/@CXXFLAGS@/$(subst /,\/,$(CXXFLAGS_INTERNAL))/g" | \
+		sed "s/@KERNEL_VERSION_MAJOR@/$(subst /,\/,$(KERNEL_VERSION_MAJOR))/g" \
 		> $(COMPONENT_PATH)/zephyr_toolchain.cmake
 
 $(COMPONENT_PATH)/micro_ros_dev/install:

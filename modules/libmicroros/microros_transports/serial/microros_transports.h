@@ -17,7 +17,11 @@
 
 #include <unistd.h>
 
+#if KERNEL_VERSION_MAJOR >= 3
+#include <zephyr/device.h>
+#else
 #include <device.h>
+#endif
 
 #ifdef __cplusplus
 extern "C"
