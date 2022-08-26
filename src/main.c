@@ -33,7 +33,7 @@ void main(void)
 {
 	rmw_uros_set_custom_transport(
 		MICRO_ROS_FRAMING_REQUIRED,
-		(void *) &default_params,
+		(void *) DEVICE_DT_GET(DT_ALIAS(uros_serial_port)),
 		zephyr_transport_open,
 		zephyr_transport_close,
 		zephyr_transport_write,
