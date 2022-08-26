@@ -24,13 +24,7 @@ extern "C"
 {
 #endif
 
-typedef struct {
-    size_t fd;
-    const struct device * uart_dev;
-} zephyr_transport_params_t;
-
 #define MICRO_ROS_FRAMING_REQUIRED true
-volatile static zephyr_transport_params_t default_params = {.fd = 1};
 
 bool zephyr_transport_open(struct uxrCustomTransport * transport);
 bool zephyr_transport_close(struct uxrCustomTransport * transport);
