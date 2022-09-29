@@ -1,9 +1,10 @@
 #include <uxr/client/transport.h>
 
 #include <microros_transports.h>
+#include <version.h>
 
-#if KERNEL_VERSION_MAJOR >= 3
-#include <zephyr/zephyr.h>
+#if KERNELVERSION >= ZEPHYR_VERSION(3,1,0)
+#include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/sys/printk.h>
 #include <zephyr/drivers/uart.h>

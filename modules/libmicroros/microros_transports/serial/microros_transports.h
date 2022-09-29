@@ -17,7 +17,9 @@
 
 #include <unistd.h>
 
-#if KERNEL_VERSION_MAJOR >= 3
+#include <version.h>
+
+#if KERNELVERSION >= ZEPHYR_VERSION(3,1,0)
 #include <zephyr/device.h>
 #else
 #include <device.h>
