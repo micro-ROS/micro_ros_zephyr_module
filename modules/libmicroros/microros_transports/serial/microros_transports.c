@@ -3,7 +3,7 @@
 #include <microros_transports.h>
 #include <version.h>
 
-#if KERNELVERSION >= ZEPHYR_VERSION(3,1,0)
+#if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/sys/printk.h>

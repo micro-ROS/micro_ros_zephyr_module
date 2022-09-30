@@ -19,7 +19,7 @@
 
 #include <version.h>
 
-#if KERNELVERSION >= ZEPHYR_VERSION(3,1,0)
+#if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)
 #include <zephyr/device.h>
 #else
 #include <device.h>
