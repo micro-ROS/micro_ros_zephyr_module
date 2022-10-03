@@ -17,7 +17,11 @@
 
 #include <unistd.h>
 
+#if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)
+#include <zephyr/device.h>
+#else
 #include <device.h>
+#endif
 
 #ifdef __cplusplus
 extern "C"
