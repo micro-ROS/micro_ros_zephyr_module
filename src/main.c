@@ -1,4 +1,6 @@
-#if KERNEL_VERSION_MAJOR >= 3
+#include <version.h>
+
+#if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)
 #include <zephyr/zephyr.h>
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
