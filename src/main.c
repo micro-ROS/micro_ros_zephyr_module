@@ -1,3 +1,5 @@
+#include <version.h>
+
 #if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)
 #include <zephyr/zephyr.h>
 #include <zephyr/device.h>
