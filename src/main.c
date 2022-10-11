@@ -5,14 +5,14 @@
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 #include <zephyr/drivers/gpio.h>
+#include <zephyr/posix/time.h>
 #else
 #include <zephyr.h>
 #include <device.h>
 #include <devicetree.h>
 #include <drivers/gpio.h>
+#include <posix/time.h>
 #endif
-
-#include <time.h>
 
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
