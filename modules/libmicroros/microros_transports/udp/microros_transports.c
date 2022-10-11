@@ -3,18 +3,21 @@
 #include <version.h>
 
 #if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)
-#include <zephyr/kernel.h>>
+#include <zephyr/kernel.h>
+#include <zephyr/unistd.h>
+#include <zephyr/arpa/inet.h>
+#include <zephyr/netdb.h>
 #else
 #include <zephyr.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 #endif
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <unistd.h>
 #include <string.h>
 #include <errno.h>
-#include <arpa/inet.h>
-#include <netdb.h>
 
 #include <microros_transports.h>
 
