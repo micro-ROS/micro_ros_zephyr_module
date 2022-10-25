@@ -94,7 +94,8 @@ $(COMPONENT_PATH)/micro_ros_src/src:
 	touch src/common_interfaces/std_srvs/COLCON_IGNORE; \
 	touch src/rcl/rcl_yaml_param_parser/COLCON_IGNORE; \
 	touch src/rcl_logging/rcl_logging_log4cxx/COLCON_IGNORE; \
-    touch src/rcl_logging/rcl_logging_spdlog/COLCON_IGNORE;
+    touch src/rcl_logging/rcl_logging_spdlog/COLCON_IGNORE; \
+    touch src/rcl_interfaces/test_msgs/COLCON_IGNORE;
 
 $(COMPONENT_PATH)/micro_ros_src/install: configure_colcon_meta configure_toolchain $(COMPONENT_PATH)/micro_ros_dev/install $(COMPONENT_PATH)/micro_ros_src/src
 	cd $(UROS_DIR); \
