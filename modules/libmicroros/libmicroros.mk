@@ -89,8 +89,8 @@ $(COMPONENT_PATH)/micro_ros_src/src:
 	touch src/rosidl/rosidl_typesupport_introspection_c/COLCON_IGNORE; \
     touch src/rosidl/rosidl_typesupport_introspection_cpp/COLCON_IGNORE; \
     touch src/rclc/rclc_examples/COLCON_IGNORE; \
-	touch src/rcl/rcl_yaml_param_parser/COLCON_IGNORE;
-	
+	touch src/rcl/rcl_yaml_param_parser/COLCON_IGNORE; \
+    touch src/rcl_interfaces/test_msgs/COLCON_IGNORE;
 
 $(COMPONENT_PATH)/micro_ros_src/install: configure_colcon_meta configure_toolchain $(COMPONENT_PATH)/micro_ros_dev/install $(COMPONENT_PATH)/micro_ros_src/src
 	cd $(UROS_DIR); \
