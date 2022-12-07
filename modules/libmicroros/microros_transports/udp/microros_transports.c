@@ -4,9 +4,9 @@
 
 #if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)
 #include <zephyr/kernel.h>
-#include <zephyr/unistd.h>
-#include <zephyr/arpa/inet.h>
-#include <zephyr/netdb.h>
+#include <zephyr/posix/unistd.h>
+#include <zephyr/posix/arpa/inet.h>
+#include <zephyr/posix/netdb.h>
 #else
 #include <zephyr.h>
 #include <unistd.h>
