@@ -21,6 +21,12 @@ For example for `disco_l475_iot1` board:
 west build -b disco_l475_iot1 micro_ros_zephyr_module
 ```
 
+It is also possible to use qemu based board over networking:
+
+```bash
+west build -p always -b mps2_an521 micro_ros_zephyr_module
+```
+
 Some configuration parameters can be found using:
 
 ```bash
@@ -35,7 +41,7 @@ Is possible to use a micro-ROS Agent just with this docker command:
 docker run -it --rm -v /dev:/dev --privileged --net=host microros/micro-ros-agent:humble serial --dev [YOUR BOARD PORT] -v6
 
 # UDPv4 micro-ROS Agent
-docker run -it --rm --net=host microros/micro-ros-agent:humnle udp4 --port 8888 -v6
+docker run -it --rm --net=host microros/micro-ros-agent:humble udp4 --port 8888 -v6
 ```
 
 ## Purpose of the Project

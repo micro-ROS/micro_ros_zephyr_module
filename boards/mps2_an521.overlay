@@ -1,0 +1,14 @@
+/ {
+    aliases {
+        uros-serial-port = &uart1;
+    };
+
+    chosen {
+		zephyr,uart_pipe = &uart0;
+	};
+
+};
+
+&uart1 {
+    status = "okay";
+};
