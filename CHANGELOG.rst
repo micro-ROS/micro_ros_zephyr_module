@@ -2,8 +2,8 @@
 Changelog for package micro_ros_zephyr
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+4.1.0 (2023-06-12)
+------------------
 * Update repos to iron (`#122 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/122>`_)
 * Update rolling sources (`#120 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/120>`_)
 * Fix Zephyr headers for UDP transport (`#108 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/108>`_) (`#114 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/114>`_)
