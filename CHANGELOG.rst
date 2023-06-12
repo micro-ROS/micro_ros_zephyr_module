@@ -2,6 +2,20 @@
 Changelog for package micro_ros_zephyr
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.1 (2023-06-12)
+------------------
+* Fix Zephyr headers for UDP transport (`#108 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/108>`_)
+* Enable std services (`#112 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/112>`_)
+* Adjust default_params initialization for cpp compatibility (`#107 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/107>`_)
+* Ignore test_msgs (`#99 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/99>`_)
+* Fix headers and timer (`#94 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/94>`_)
+* transports: add mising version.h to serial-usb transport header (`#90 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/90>`_)
+* Use ZEPHYR_VERSION_CODE instead of KERNEL_VERSION_MAJOR (`#86 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/86>`_) (`#89 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/89>`_)
+* Fix/zephyr includes (`#82 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/82>`_)
+* boards: move board specific configurations (`#63 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/63>`_)
+* Fix nightly (`#69 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/69>`_)
+* Move support to v2.7.x and v3.1.0 (backport `#64 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/64>`_) (`#66 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/66>`_)
+
 3.0.0 (2022-05-25)
 ------------------
 * Initial humble release (`#59 <https://github.com/micro-ROS/micro_ros_zephyr_module/issues/59>`_)
