@@ -17,12 +17,12 @@ jobs:
       fail-fast: false
       matrix:
         zephyr_version: ["zephyr-v3.1.0", "zephyr-v2.7.2"]
-        distro: ["foxy", "humble", "rolling"]
+        distro: ["iron", "humble", "rolling"]
         include:
-          - distro: foxy
-            branch: foxy
+          - distro: iron
+            branch: iron
           - distro: rolling
-            branch: main
+            branch: rolling
           - distro: humble
             branch: humble
           - zephyr_version: zephyr-v2.7.2
@@ -35,6 +35,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: micro_ros_zephyr_module
+          branch: ${{ matrix.branch }}
 
       - name: Dependencies
         shell: bash
