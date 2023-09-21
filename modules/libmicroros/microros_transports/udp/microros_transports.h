@@ -15,11 +15,18 @@
 #ifndef _MICROROS_CLIENT_ZEPHYR_TRANSPORT_H_
 #define _MICROROS_CLIENT_ZEPHYR_TRANSPORT_H_
 
-#include <unistd.h>
-
 #include <sys/types.h>
+
+#if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)
+#include <zephyr/posix/unistd.h>
+#include <zephyr/posix/sys/socket.h>
+#include <zephyr/posix/poll.h>
+#else
+#include <unistd.h>
 #include <posix/sys/socket.h>
 #include <posix/poll.h>
+#endif
+
 
 #ifdef __cplusplus
 extern "C"
