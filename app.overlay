@@ -1,10 +1,12 @@
-/*Added this lines for compability with Zephyr v2.7*/
+/*Added these lines for compability with Zephyr v2.7*/
 zephyr_udc0: &usbotg_fs {
 	pinctrl-0 = <&usb_otg_fs_dm_pa11 &usb_otg_fs_dp_pa12
 		     &usb_otg_fs_id_pa10>;
 	pinctrl-names = "default";
 	status = "okay";
 };
+/* End of compability part */
+
 
 &zephyr_udc0 {
 	cdc_acm_uart0: cdc_acm_uart0 {
