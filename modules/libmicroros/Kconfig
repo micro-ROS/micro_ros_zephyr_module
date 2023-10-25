@@ -18,10 +18,11 @@ if MICROROS
         
         config MICROROS_TRANSPORT_SERIAL
             bool "micro-ROS serial transport"
-        
+            select RING_BUFFER
         config MICROROS_TRANSPORT_SERIAL_USB
             bool "micro-ROS USB serial transport"
-        
+             select RING_BUFFER
+             select USB_DEVICE_STACK
         config MICROROS_TRANSPORT_UDP
             bool "micro-ROS UDP network transport"
         
@@ -64,7 +65,21 @@ if MICROROS
                 micro-ROS Agent IP.
     endif
 
-    
+    if MICROROS_TRANSPORT_SERIAL_USB
+        config USB_CDC_ACM
+            bool 
+            default y
+        config USB_CDC_ACM_RINGBUF_SIZE
+            int "USB-CDC-ACM Ringbuffer size"
+            default "2048"
+        config USB_DEVICE_PRODUCT
+            string "USB Device Product"
+            default "Zephyr micro-ROS"
+
+    endif
+
+
+
     config MICROROS_NODES
         string "available micro-ROS nodes"
         default "1"
@@ -98,4 +113,4 @@ if MICROROS
         default "4"  
 
 endif
-    
+
