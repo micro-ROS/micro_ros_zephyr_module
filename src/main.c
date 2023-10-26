@@ -1,7 +1,11 @@
 #include <version.h>
 
 #if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)
+#if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,2,0)
+#include <zephyr/kernel.h>
+#else
 #include <zephyr/zephyr.h>
+#endif
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 #include <zephyr/drivers/gpio.h>
