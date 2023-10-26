@@ -77,9 +77,6 @@ if MICROROS
             default "Zephyr micro-ROS"
 
     endif
-
-
-
     config MICROROS_NODES
         string "available micro-ROS nodes"
         default "1"
