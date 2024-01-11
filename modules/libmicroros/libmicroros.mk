@@ -95,6 +95,7 @@ $(COMPONENT_PATH)/micro_ros_src/src:
 	git clone -b rolling https://github.com/micro-ROS/micro_ros_utilities src/micro_ros_utilities; \
 	git clone -b rolling https://github.com/ros2/rosidl_core src/rosidl_core; \
 	touch src/ros2_tracing/test_tracetools/COLCON_IGNORE; \
+	touch src/ros2_tracing/lttngpy/COLCON_IGNORE; \
     touch src/rosidl/rosidl_typesupport_introspection_cpp/COLCON_IGNORE; \
     touch src/rclc/rclc_examples/COLCON_IGNORE; \
     touch src/common_interfaces/actionlib_msgs/COLCON_IGNORE; \
