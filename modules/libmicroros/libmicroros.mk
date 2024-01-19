@@ -73,7 +73,7 @@ $(COMPONENT_PATH)/micro_ros_src/src:
 	@rm -rf micro_ros_src; \
 	mkdir micro_ros_src; cd micro_ros_src; \
 	git clone -b ros2 https://github.com/eProsima/micro-CDR src/micro-CDR; \
-	git clone -b ros2 https://github.com/eProsima/Micro-XRCE-DDS-Client src/Micro-XRCE-DDS-Client; \
+	git clone -b fix/z_impl_clock_gettime https://github.com/danielallstar/Micro-XRCE-DDS-Client src/Micro-XRCE-DDS-Client; \
 	git clone -b rolling https://github.com/micro-ROS/rcl src/rcl; \
 	git clone -b rolling https://github.com/ros2/rclc src/rclc; \
 	git clone -b rolling https://github.com/micro-ROS/rcutils src/rcutils; \
