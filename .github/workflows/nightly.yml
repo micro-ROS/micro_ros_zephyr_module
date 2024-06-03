@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         zephyr_version: ["zephyr-v3.1.0", "zephyr-v2.7.2"]
-        distro: ["iron", "humble", "rolling"]
+        distro: ["iron", "humble", "rolling", "jazzy"]
         include:
           - distro: iron
             branch: iron
@@ -25,6 +25,8 @@ jobs:
             branch: rolling
           - distro: humble
             branch: humble
+          - distro: jazzy
+            branch: jazzy
           - zephyr_version: zephyr-v2.7.2
             zephyr_sdk: 0.14.2
             sdk_filename: zephyr-sdk-$TOOLCHAIN_VERSION\_linux-x86_64_minimal.tar.gz
