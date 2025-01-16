@@ -1,18 +1,20 @@
-name: CI
+name: Legacy_CI
 
 on:
   pull_request:
-    branches-ignore: ["iron", "rolling", "humble"]
+    branches: ["iron", "rolling", "humble"]
 
 jobs:
 
-  micro_ros_zephyr_module:
+  legacy_micro_ros_zephyr_module:
     runs-on: ubuntu-latest
     container: 
-      image: zephyrprojectrtos/zephyr-build:v0.26.17
+      image: zephyrprojectrtos/zephyr-build:v0.23.2
       options: --user root
     strategy:
       fail-fast: false
+      matrix:
+        zephyr_version: ["zephyr-v3.1.0", "zephyr-v2.7.2"]
     defaults:
       run:
         working-directory: /workdir
@@ -26,7 +28,10 @@ jobs:
         run: |
           # Zephyr setup
           apt -y update
-          west init
+          west init 
+          cd zephyr
+          git checkout ${{ matrix.zephyr_version }}
+          cd ..
           west update --narrow
 
           # Installing micro-ROS prerequisites
@@ -37,3 +42,4 @@ jobs:
 
           # Build with Serial transport
           west build -b disco_l475_iot1 $GITHUB_WORKSPACE/micro_ros_zephyr_module -p -- -DCONFIG_MICROROS_TRANSPORT_SERIAL=y
+

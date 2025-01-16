@@ -10,75 +10,35 @@ on:
 
 jobs:
 
-  micro_ros_zephyr_module:
+  nightly_micro_ros_zephyr_module:
     runs-on: ubuntu-latest
-    container: ubuntu:22.04
+    container: 
+      image: zephyrprojectrtos/zephyr-build:v0.26.17
+      options: --user root
     strategy:
       fail-fast: false
-      matrix:
-        zephyr_version: ["zephyr-v3.1.0", "zephyr-v2.7.2"]
-        distro: ["iron", "humble", "rolling", "jazzy"]
-        include:
-          - distro: iron
-            branch: iron
-          - distro: rolling
-            branch: rolling
-          - distro: humble
-            branch: humble
-          - distro: jazzy
-            branch: jazzy
-          - zephyr_version: zephyr-v2.7.2
-            zephyr_sdk: 0.14.2
-            sdk_filename: zephyr-sdk-$TOOLCHAIN_VERSION\_linux-x86_64_minimal.tar.gz
-          - zephyr_version: zephyr-v3.1.0
-            zephyr_sdk: 0.14.2
-            sdk_filename: zephyr-sdk-$TOOLCHAIN_VERSION\_linux-x86_64_minimal.tar.gz
+    defaults:
+      run:
+        working-directory: /workdir
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           path: micro_ros_zephyr_module
-          branch: ${{ matrix.branch }}
+          ref: jazzy
 
       - name: Build
         shell: bash
         run: |
-          # Install dependencies
-          apt update
-          export DEBIAN_FRONTEND=noninteractive
-          apt install -y --no-install-recommends wget git cmake ninja-build gperf \
-            ccache dfu-util device-tree-compiler wget \
-            python3-dev python3-pip python3-setuptools python3-tk python3-wheel xz-utils file \
-            make gcc gcc-multilib g++-multilib libsdl2-dev
-
-          # Install Zephyr environment
-          pip3 install --user -U west
-          export PATH=~/.local/bin:/github/home/.local/bin:"$PATH"
-          west init zephyrproject
-          cd zephyrproject
-          cd zephyr
-          git checkout ${{ matrix.zephyr_version }}
-          cd ..
-          west update
-          west zephyr-export
-          pip3 install --user -r zephyr/scripts/requirements.txt
-          cd ..
-          export TOOLCHAIN_VERSION=${{ matrix.zephyr_sdk }}
-          export TOOLCHAIN_FILE_NAME=${{ matrix.sdk_filename }}
-          wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v$TOOLCHAIN_VERSION/$TOOLCHAIN_FILE_NAME
-          tar xvf $TOOLCHAIN_FILE_NAME
-          cd zephyr-sdk-$TOOLCHAIN_VERSION
-          ./setup.sh -h -t arm-zephyr-eabi -c
-          cd ..
-          source zephyr-sdk-$TOOLCHAIN_VERSION/environment-setup-x86_64-pokysdk-linux
-          export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
-          export ZEPHYR_SDK_INSTALL_DIR=$(pwd)/zephyr-sdk-$TOOLCHAIN_VERSION
-          source zephyrproject/zephyr/zephyr-env.sh
+          # Zephyr setup
+          apt -y update
+          west init 
+          west update --narrow
 
           # Installing micro-ROS prerequisites
           pip3 install catkin_pkg lark-parser empy colcon-common-extensions
 
           # Build with Serial USB transport
-          west build -b disco_l475_iot1 micro_ros_zephyr_module -- -DCONFIG_MICROROS_TRANSPORT_SERIAL_USB=y
+          west build -b disco_l475_iot1 $GITHUB_WORKSPACE/micro_ros_zephyr_module -p -- -DCONFIG_MICROROS_TRANSPORT_SERIAL_USB=y
 
           # Build with Serial transport
-          west build -b disco_l475_iot1 micro_ros_zephyr_module -- -DCONFIG_MICROROS_TRANSPORT_SERIAL=y
+          west build -b disco_l475_iot1 $GITHUB_WORKSPACE/micro_ros_zephyr_module -p -- -DCONFIG_MICROROS_TRANSPORT_SERIAL=y
