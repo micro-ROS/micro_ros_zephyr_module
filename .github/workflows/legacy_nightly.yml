@@ -13,8 +13,10 @@ jobs:
   legacy_nightly_micro_ros_zephyr_module:
     runs-on: ubuntu-latest
     container: 
-      image: zephyrprojectrtos/zephyr-build:v0.23.2
+      image: zephyrprojectrtos/ci:v0.23.2
       options: --user root
+    env:
+      CMAKE_PREFIX_PATH: /opt/toolchains
     strategy:
       fail-fast: false
       matrix:
@@ -27,9 +29,6 @@ jobs:
             branch: humble
           - distro: rolling
             branch: rolling
-    defaults:
-      run:
-        working-directory: /workdir
     steps:
       - uses: actions/checkout@v4
         with:

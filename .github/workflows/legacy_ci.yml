@@ -9,15 +9,14 @@ jobs:
   legacy_micro_ros_zephyr_module:
     runs-on: ubuntu-latest
     container: 
-      image: zephyrprojectrtos/zephyr-build:v0.23.2
+      image: zephyrprojectrtos/ci:v0.23.2
       options: --user root
+    env:
+      CMAKE_PREFIX_PATH: /opt/toolchains
     strategy:
       fail-fast: false
       matrix:
         zephyr_version: ["zephyr-v3.1.0", "zephyr-v2.7.2"]
-    defaults:
-      run:
-        working-directory: /workdir
     steps:
       - uses: actions/checkout@v4
         with:
