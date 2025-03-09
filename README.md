@@ -3,7 +3,7 @@
 
 # micro-ROS module for Zephyr
 
-This module has been tested in Zephyr RTOS v4.0.99 (SDK 0.16.9-rc3), using a docker image based on 'zephyrprojectrtos/zephyr-build:v0.26.17'.
+This module has been tested in Zephyr RTOS v4.0.0 (SDK 0.16.9-rc3), using a docker image based on 'zephyrprojectrtos/zephyr-build:v0.26.17'.
 
 ## Dependencies
 

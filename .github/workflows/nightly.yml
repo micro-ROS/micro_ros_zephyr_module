@@ -19,11 +19,21 @@ jobs:
       CMAKE_PREFIX_PATH: /opt/toolchains
     strategy:
       fail-fast: false
+      matrix:
+        zephyr_version: ["v4.0.0"]
+        distro: ["rolling", "jazzy", "humble"]
+        include:
+          - distro: rolling
+            branch: rolling
+          - distro: jazzy
+            branch: jazzy
+          - distro: humble
+            branch: humble
     steps:
       - uses: actions/checkout@v4
         with:
           path: micro_ros_zephyr_module
-          ref: jazzy
+          ref: ${{ matrix.branch }}
 
       - name: Build
         shell: bash
@@ -31,6 +41,9 @@ jobs:
           # Zephyr setup
           apt -y update
           west init 
+          cd zephyr
+          git checkout ${{ matrix.zephyr_version }}
+          cd ..
           west update --narrow
 
           # Installing micro-ROS prerequisites
