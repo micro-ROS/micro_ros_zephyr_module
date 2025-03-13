@@ -24,6 +24,7 @@
 #include <stdbool.h>
 
 #define RING_BUF_SIZE 2048
+#define UART_NODE DT_NODELABEL(usart1)
 
 char uart_in_buffer[RING_BUF_SIZE];
 char uart_out_buffer[RING_BUF_SIZE];
@@ -52,9 +53,7 @@ static void uart_fifo_callback(const struct device * dev, void * args){
 bool zephyr_transport_open(struct uxrCustomTransport * transport){
     zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
 
-    char uart_descriptor[8];
-    sprintf(uart_descriptor,"UART_%d", params->fd);
-    params->uart_dev = device_get_binding(uart_descriptor);
+    params->uart_dev = DEVICE_DT_GET(UART_NODE);
     if (!params->uart_dev) {
         printk("Serial device not found\n");
         return false;
