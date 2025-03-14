@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        zephyr_version: ["v4.0.0"]
+        zephyr_version: ["v4.0.0", "v4.1.0"]
     steps:
       - uses: actions/checkout@v4
         with:
