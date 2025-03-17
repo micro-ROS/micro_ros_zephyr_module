@@ -49,6 +49,11 @@ jobs:
           # Installing micro-ROS prerequisites
           pip3 install catkin_pkg lark-parser empy colcon-common-extensions
 
+          if [[ ${{ matrix.branch }} == "humble" ]]; then
+            # Use empy version 3.3.4 for Humble
+            pip3 install empy==3.3.4
+          fi
+
           # Build with Serial USB transport
           west build -b disco_l475_iot1 $GITHUB_WORKSPACE/micro_ros_zephyr_module -p -- -DCONFIG_MICROROS_TRANSPORT_SERIAL_USB=y
 
