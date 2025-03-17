@@ -52,10 +52,9 @@ externalproject_add(libmicroros_project
     BUILD_BYPRODUCTS ${MICROROS_DIR}/libmicroros.a
     )
 
-zephyr_library_import(libmicroros ${MICROROS_DIR}/libmicroros.a)
+zephyr_link_libraries(${MICROROS_DIR}/libmicroros.a)
 
 zephyr_interface_library_named(microros)
-add_dependencies(microros libmicroros)
 add_dependencies(microros libmicroros_project)
 target_include_directories(microros INTERFACE ${MICROROS_DIR}/include)
 
@@ -96,7 +95,6 @@ zephyr_library_sources(
 
 add_dependencies(microros microros_transports)
 add_dependencies(microros_transports libmicroros_project)
-add_dependencies(microros_transports libmicroros)
 
 # Cleaning
 

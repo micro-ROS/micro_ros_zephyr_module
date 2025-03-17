@@ -3,7 +3,7 @@
 
 # micro-ROS module for Zephyr
 
-This module has been tested in Zephyr RTOS v2.7.0 (SDK 0.14.2) and v3.1.0 (SDK 0.14.2).
+This module has been tested in Zephyr RTOS v4.0.0 (SDK 0.16.9-rc3), and v4.1.0 (SDK 0.16.9-rc3), using a docker image based on 'zephyrprojectrtos/zephyr-build:v0.26.17'.
 
 ## Dependencies
 
@@ -18,7 +18,7 @@ pip3 install catkin_pkg lark-parser empy colcon-common-extensions
 For example for `disco_l475_iot1` board:
 
 ```bash
-west build -b disco_l475_iot1 micro_ros_zephyr_module
+west build -b disco_l475_iot1 -p
 ```
 
 Some configuration parameters can be found using:
