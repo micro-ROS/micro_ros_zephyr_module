@@ -12,11 +12,6 @@ jobs:
 
   nightly_micro_ros_zephyr_module:
     runs-on: ubuntu-latest
-    container: 
-      image: zephyrprojectrtos/ci:v0.26.17
-      options: --user root
-    env:
-      CMAKE_PREFIX_PATH: /opt/toolchains
     strategy:
       fail-fast: false
       matrix:
@@ -35,27 +30,51 @@ jobs:
           path: micro_ros_zephyr_module
           ref: ${{ matrix.branch }}
 
-      - name: Build
-        shell: bash
+      - name: Free disk space
         run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo docker image prune --all --force
+
+      - name: Create build script
+        run: |
+          cat << 'EOF' > build.sh
+          #!/bin/bash
+          set -e
+
           # Zephyr setup
           apt -y update
-          west init 
+          west init
           cd zephyr
-          git checkout ${{ matrix.zephyr_version }}
+          git checkout $ZEPHYR_VERSION
           cd ..
           west update --narrow
 
           # Installing micro-ROS prerequisites
           pip3 install catkin_pkg lark-parser empy colcon-common-extensions
 
-          if [[ ${{ matrix.branch }} == "humble" ]]; then
+          if [[ "$BRANCH_NAME" == "humble" ]]; then
             # Use empy version 3.3.4 for Humble
             pip3 install empy==3.3.4
           fi
 
           # Build with Serial USB transport
-          west build -b disco_l475_iot1 $GITHUB_WORKSPACE/micro_ros_zephyr_module -p -- -DCONFIG_MICROROS_TRANSPORT_SERIAL_USB=y
+          west build -b disco_l475_iot1 /github/workspace/micro_ros_zephyr_module -p -- -DCONFIG_MICROROS_TRANSPORT_SERIAL_USB=y
 
           # Build with Serial transport
-          west build -b disco_l475_iot1 $GITHUB_WORKSPACE/micro_ros_zephyr_module -p -- -DCONFIG_MICROROS_TRANSPORT_SERIAL=y
+          west build -b disco_l475_iot1 /github/workspace/micro_ros_zephyr_module -p -- -DCONFIG_MICROROS_TRANSPORT_SERIAL=y
+          EOF
+          chmod +x build.sh
+
+      - name: Build
+        run: |
+          sudo docker run --rm \
+            --user root \
+            -v ${{ github.workspace }}:/github/workspace \
+            -w /github/workspace \
+            -e CMAKE_PREFIX_PATH=/opt/toolchains \
+            -e ZEPHYR_VERSION=${{ matrix.zephyr_version }} \
+            -e BRANCH_NAME=${{ matrix.branch }} \
+            zephyrprojectrtos/ci:v0.26.17 \
+            /github/workspace/build.sh
