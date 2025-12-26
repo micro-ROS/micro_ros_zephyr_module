@@ -25,6 +25,8 @@ if MICROROS
              select USB_DEVICE_STACK
         config MICROROS_TRANSPORT_UDP
             bool "micro-ROS UDP network transport"
+        config MICROROS_TRANSPORT_CAN_FD
+            bool "micro-ROS CAN-FD transport"
         
     endchoice
 
@@ -103,11 +105,13 @@ if MICROROS
     
     config MICROROS_XRCE_DDS_MTU
         string "micro-ROS transport MTU"
+        default "64" if MICROROS_TRANSPORT_CAN_FD
         default "512"
-        
+
     config MICROROS_XRCE_DDS_HISTORIC
         string "micro-ROS middleware memory slots"
-        default "4"  
+        default "16" if MICROROS_TRANSPORT_CAN_FD
+        default "4"
 
 endif
 
