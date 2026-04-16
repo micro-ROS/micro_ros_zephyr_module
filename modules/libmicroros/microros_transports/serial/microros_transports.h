@@ -15,7 +15,9 @@
 #ifndef _MICROROS_CLIENT_ZEPHYR_TRANSPORT_H_
 #define _MICROROS_CLIENT_ZEPHYR_TRANSPORT_H_
 
-#include <unistd.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include <version.h>
 
 #if ZEPHYR_VERSION_CODE >= ZEPHYR_VERSION(3,1,0)

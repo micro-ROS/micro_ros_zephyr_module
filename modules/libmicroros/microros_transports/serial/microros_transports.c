@@ -9,14 +9,12 @@
 #include <zephyr/sys/printk.h>
 #include <zephyr/drivers/uart.h>
 #include <zephyr/sys/ring_buffer.h>
-#include <zephyr/posix/unistd.h>
 #else
 #include <zephyr.h>
 #include <device.h>
 #include <sys/printk.h>
 #include <drivers/uart.h>
 #include <sys/ring_buffer.h>
-#include <posix/unistd.h>
 #endif
 
 #include <stdio.h>
@@ -24,12 +22,24 @@
 #include <stdbool.h>
 
 #define RING_BUF_SIZE 2048
+
+/* Select the UART device for the micro-ROS serial transport.
+ * Applications that need a different UART (e.g. lpuart1) define a
+ * DT alias in their board overlay:
+ *
+ *   / { aliases { microros-serial = &lpuart1; }; };
+ *
+ * When the alias is absent the transport falls back to usart1 for
+ * backward compatibility with existing applications. */
+#if DT_NODE_EXISTS(DT_ALIAS(microros_serial))
+#define UART_NODE DT_ALIAS(microros_serial)
+#else
 #define UART_NODE DT_NODELABEL(usart1)
+#endif
 
 char uart_in_buffer[RING_BUF_SIZE];
-char uart_out_buffer[RING_BUF_SIZE];
 
-struct ring_buf out_ringbuf, in_ringbuf;
+struct ring_buf in_ringbuf;
 
 // --- micro-ROS Serial Transport for Zephyr ---
 
@@ -54,12 +64,12 @@ bool zephyr_transport_open(struct uxrCustomTransport * transport){
     zephyr_transport_params_t * params = (zephyr_transport_params_t*) transport->args;
 
     params->uart_dev = DEVICE_DT_GET(UART_NODE);
-    if (!params->uart_dev) {
-        printk("Serial device not found\n");
+    if (!device_is_ready(params->uart_dev)) {
+        printk("Serial device not ready\n");
         return false;
     }
 
-    ring_buf_init(&in_ringbuf, sizeof(uart_in_buffer), uart_out_buffer);
+    ring_buf_init(&in_ringbuf, sizeof(uart_in_buffer), uart_in_buffer);
 
     uart_irq_callback_set(params->uart_dev, uart_fifo_callback);
 
@@ -93,7 +103,7 @@ size_t zephyr_transport_read(struct uxrCustomTransport* transport, uint8_t* buf,
     int spent_time = 0;
 
     while(ring_buf_is_empty(&in_ringbuf) && spent_time < timeout){
-        usleep(1000);
+        k_usleep(1000);
         spent_time++;
     }
 
